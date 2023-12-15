@@ -1,0 +1,52 @@
+volatile long degrees = 0;
+
+int MotorL = 10;
+int MotorR = 9;
+int Strom = 5;
+#define YELLOW 3
+#define BLUE 2
+
+void setup() {
+  Serial.begin(9600);
+  drive(100, 0, 90); // Speed zwischen 100 und 250 auswählen
+}
+
+void loop() {
+
+}
+
+void drive(int SpeedL, int SpeedR, int Grad) {
+  pinMode(MotorL, OUTPUT);
+  pinMode(MotorR, OUTPUT);
+  pinMode(Strom, OUTPUT);
+  pinMode(YELLOW, INPUT);
+  pinMode(BLUE, INPUT);
+  digitalWrite(Strom, HIGH);
+
+  degrees = 0;
+
+  // Zu Bewegende Gradzahl
+  long targetDegrees = Grad;
+  long initialDegrees = degrees;
+
+  attachInterrupt(digitalPinToInterrupt(YELLOW), countDegrees, CHANGE);
+
+  while (abs(degrees - initialDegrees) < targetDegrees) { // Motorspeed
+    analogWrite(MotorL, SpeedL);
+    analogWrite(MotorR, SpeedR);
+  }
+
+  // Stop the motor
+  digitalWrite(MotorL, LOW);
+  digitalWrite(MotorR, LOW);
+
+  detachInterrupt(digitalPinToInterrupt(YELLOW));
+}
+
+void countDegrees() {
+  if (digitalRead(YELLOW) == digitalRead(BLUE)) {
+    degrees++;
+  } else {
+    degrees--;
+  }
+}
