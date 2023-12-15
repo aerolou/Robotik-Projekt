@@ -1,0 +1,23 @@
+const int pwmPin1 = 10;   // WEIß Verbinden Sie PWM1 des Motors mit Pin 10 am Arduino
+const int pwmPin2 = 9;   // SCHWARZ Verbinden Sie PWM2 des Motors mit Pin 9 am Arduino
+const int enablePin = 5; // GRÜN Verbinden Sie 5V des Motors mit Pin 5 am Arduino
+                          // ROT = GROUND
+void setup() {
+  Serial.begin(9600);
+  pinMode(pwmPin1, OUTPUT);
+  pinMode(pwmPin2, OUTPUT);
+  pinMode(enablePin, OUTPUT);
+
+  digitalWrite(enablePin, HIGH); // Aktivieren Sie den Motor
+}
+
+void loop() {
+  // Motor drehen
+  analogWrite(pwmPin1, 255); // Vollgeschwindigkeit
+  analogWrite(pwmPin2, 0);   // Keine Geschwindigkeit auf der anderen Seite
+
+ 
+  delay(1000);
+
+
+}
